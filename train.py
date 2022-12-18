@@ -193,71 +193,9 @@ else:
 
 print("model selection & parallelization")
 
-if args.train_level == 'group':
-    if args.model_name == 'MLP':
-        model = MLP(input_feats=input_feats * (group_num - 1) * context_frames, out_feats = (group_num - 1), label_levels = label_levels) #TODO group_num - 1 for 
-    if args.model_name == 'Graph_NoTemporal':
-        model = Graph_NoTemporal(input_feats=input_feats * context_frames, out_feats = (group_num - 1) , label_levels = label_levels )
-
-    if args.model_name == 'Graph_NoTemporal_Transformer':
-        model = Graph_NoTemporal_Transformer(input_feats=input_feats * context_frames, out_feats = (group_num - 1), label_levels = label_levels )
-
-    if args.model_name == 'GroupTransformerEncoder':
-        model = GroupTransformerEncoder(input_feats=input_feats, out_feats = (group_num - 1), label_levels = label_levels, context_frames = context_frames, )
-    if args.model_name == 'MultipartyTransformer':
-        model = MultipartyTransformer(input_feats=input_feats, out_feats = (group_num-1), label_levels=label_levels)
-
-
-
-if args.train_level == 'individual':
-    print('here')
-    if args.model_name == 'UNet':
-        model = IndividualEncoder(input_feats=input_feats, out_feats = 1, label_levels = label_levels )
-
-    if args.model_name == 'FrozenGPT':
-        model = FrozenGPT(input_feats=input_feats, out_feats = 1, label_levels = label_levels)
-
-    if args.model_name == 'FrozenGPTCNNLSTM':
-        model = FrozenGPTCNNLSTM(input_feats=input_feats, out_feats = 1, label_levels = label_levels)
-
-    if args.model_name == 'CNNLSTM':
-        model = CNNLSTM(input_feats=input_feats, out_feats = 1, label_levels = label_levels )
-    
-    if args.model_name == 'Video_Resnet_LSTM':
-        model = Video_Resnet_LSTM(input_feats=input_feats, out_feats = 1, label_levels = label_levels)
-        print('selected {}'.format(args.model_name))
-
-
-    if args.model_name == 'Video_Resnet_OpenPose_Concat_LSTM':
-        model = Video_Resnet_OpenPose_Concat_LSTM(input_feats=input_feats, out_feats = 1, label_levels = label_levels)
-
-if args.train_level == 'individual+group':
-
-
-    if args.model_name == 'UNetTransformer':
-        if not args.pretrained: 
-            path_to_pretrained = None 
-        else:
-            path_to_pretrained = weight_path.replace(model_name, 'UNet').replace("individual+group", 'individual').replace("/unfrozen", '').replace("_contrastive", '')
-        model = UNetTransformer(input_feats, (group_num - 1), label_levels, context_frames, path_to_pretrained, contrastive = args.contrastive)
-    if args.model_name == 'UNetGraph':
-        if not args.pretrained: 
-            path_to_pretrained = None 
-        else:
-            path_to_pretrained = weight_path.replace(model_name, 'UNet').replace("individual+group", 'individual').replace("/unfrozen", '').replace("_contrastive", '')
-        model = UNetGraph(input_feats, (group_num - 1), label_levels, context_frames, path_to_pretrained, contrastive = args.contrastive)
-    if args.model_name == 'CNNLSTMTransformer':
-        if not args.pretrained: 
-            path_to_pretrained = None 
-        else:
-            path_to_pretrained = weight_path.replace(model_name, 'CNNLSTM').replace("individual+group", 'individual').replace("/unfrozen", '').replace("_contrastive", '')
-        model = CNNLSTMTransformer(input_feats, (group_num - 1), label_levels, context_frames, path_to_pretrained, contrastive = args.contrastive)
-
-
-    # if args.model_name == 'UNetGraph:
-    #     path_to_pretrained = args.path_to_pretrained
-    #     model = UNetGraph(input_feats, (group_num - 1), context_frames, path_to_pretrained)
-
+if args.model_name == 'Video_Resnet_LSTM':
+    model = Video_Resnet_LSTM(input_feats=input_feats, out_feats = 1, label_levels = label_levels)
+    print('selected {}'.format(args.model_name))
 
 if args.parallel: # and args.data_split != 'debug'
     if torch.cuda.device_count() > 1:
