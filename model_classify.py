@@ -4,8 +4,8 @@ import torch.nn as nn
 import pdb
 import utils 
 import numpy as np
-from transformers import GPT2Tokenizer, GPT2Model
 from collections import OrderedDict
+
 class Video_Resnet_LSTM(nn.Module):
   #https://www.frontiersin.org/articles/10.3389/frobt.2020.00116/full
     def __init__(self, input_feats, out_feats, label_levels = 9, hidden_dim = 256, time_step=3):
